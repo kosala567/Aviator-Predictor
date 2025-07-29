@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviator High Odd Tracker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #ffcc00;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #444;
+      padding: 10px;
+    }
+    th {
+      background-color: #0f3460;
+    }
+    td {
+      background-color: #1a1a2e;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background-color: #ffcc00;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aviator High Odd Tracker 🇱🇰</h1>
+
+  <p>🕓 වේලාව, 💥 Multiplier අගය හා 🔥 High Odd දැක්කාද කියලා මෙතන සටහන් කරන්න!</p>
+
+  <form id="aviatorForm">
+    <input type="time" id="time" required>
+    <input type="number" step="0.01" id="multiplier" placeholder="Multiplier (උදා: 2.35)" required>
+    <button type="submit">➕ එකතු කරන්න</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>🕓 Time</th>
+        <th>💥 Multiplier</th>
+        <th>🔥 High Odd?</th>
+        <th>📏 Since Last High Odd</th>
+      </tr>
+    </thead>
+    <tbody id="logTable">
+    </tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('aviatorForm');
+    const logTable = document.getElementById('logTable');
+    let lastHighOddIndex = -1;
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const time = document.getElementById('time').value;
+      const multiplier = parseFloat(document.getElementById('multiplier').value);
+
+      const isHighOdd = multiplier >= 10;
+      const rowCount = logTable.rows.length;
+      const roundsSince = lastHighOddIndex === -1 ? '-' : rowCount - lastHighOddIndex;
+
+      const row = logTable.insertRow();
+      row.insertCell().textContent = time;
+      row.insertCell().textContent = multiplier.toFixed(2);
+      row.insertCell().textContent = isHighOdd ? '✅' : '❌';
+      row.insertCell().textContent = isHighOdd ? 0 : roundsSince;
+
+      if (isHighOdd) {
+        lastHighOddIndex = rowCount;
+      }
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
